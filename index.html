@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>redux</title>
+</head>
+
+<body>
+    <script type="module">
+        import { createStore, bindActionCreator } from './redux/index.js'
+
+        function reducer(state, action) {
+            switch (action.type) {
+                case "increase":
+                    return { ...state, count: state.count + 1 }
+                    break;
+
+                case "add":
+                    return { ...state, count: state.count + action.payload }
+                    break;
+
+                default:
+                    return state
+                    break;
+            }
+        }
+
+        const initState = { count: 1 }
+        const store = createStore(reducer, initState);
+        console.log('state:', store.getState())
+        const unListen = store.subscribe(() => {
+            console.log('监听到dispatch', store.getState())
+        })
+        store.dispatch({ type: 'increase' })
+        unListen();
+        store.dispatch({ type: 'increase' })
+
+
+        const addCreator = function (num) {
+            return {
+                type: 'add',
+                payload: num
+            }
+        }
+        store.dispatch(addCreator(100))
+        console.log('state:', store.getState())
+
+        const unListen2 = store.subscribe(() => {
+            console.log('监听到dispatch', store.getState())
+        })
+        const actions = bindActionCreator(addCreator, store.dispatch)
+        console.log(actions)
+        actions(100);
+
+        const actions2 = bindActionCreator({
+            addCreator,
+            test: addCreator
+        }, store.dispatch)
+        console.log(actions2)
+        actions2.addCreator(100)
+        actions2.test(100)
+    </script>
+</body>
+
+</html>
