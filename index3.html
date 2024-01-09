@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>redux</title>
+    </head>
+
+    <body>
+        <script type="module">
+            import { createStore, applyMiddleware } from './redux/index.js';
+
+            function reducer(state, action) {
+                switch (action.type) {
+                    case 'increase':
+                        return { ...state, count: state.count + 1 };
+                        break;
+
+                    case 'add':
+                        return { ...state, count: state.count + action.payload };
+                        break;
+
+                    default:
+                        return state;
+                        break;
+                }
+            }
+
+            function middleware1(store) {
+                return function (next) {
+                    //下面返回的函数，是最终要要应用的dispatch函数
+                    return function (action) {
+                        console.log('中间件1');
+                        console.log('旧数据：', store.getState());
+                        console.log('action:', action);
+                        next(action);
+                        console.log('新数据：', store.getState());
+                        console.log('');
+                    };
+                };
+            }
+            function middleware2(store) {
+                return function (next) {
+                    //下面返回的函数，是最终要要应用的dispatch函数
+                    return function (action) {
+                        console.log('中间件2');
+                        console.log('旧数据：', store.getState());
+                        console.log('action:', action);
+                        next(action);
+                        console.log('新数据：', store.getState());
+                        console.log('');
+                    };
+                };
+            }
+            function middleware3(store) {
+                return function (next) {
+                    //下面返回的函数，是最终要要应用的dispatch函数
+                    return function (action) {
+                        console.log('中间件3');
+                        console.log('旧数据：', store.getState());
+                        console.log('action:', action);
+                        next(action);
+                        console.log('新数据：', store.getState());
+                        console.log('');
+                    };
+                };
+            }
+
+            //应用方式1
+            const store = createStore(
+                reducer,
+                {
+                    count: 1,
+                },
+                applyMiddleware(middleware1, middleware2, middleware3)
+            );
+            //应用方式2
+            // const store = applyMiddleware(middleware1, middleware2)(createStore)(reducer, {
+            //     count: 1,
+            // });
+
+            console.log('state:', store.getState());
+
+            store.dispatch({ type: 'increase' });
+            const addCreator = function (num) {
+                return {
+                    type: 'add',
+                    payload: num,
+                };
+            };
+            store.dispatch(addCreator(100));
+            console.log('state:', store.getState());
+        </script>
+    </body>
+</html>

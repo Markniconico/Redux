@@ -24,7 +24,6 @@
                 case "add":
                     return { ...state, count: state.count + action.payload }
                     break;
-
                 default:
                     return state
                     break;
@@ -54,12 +53,12 @@
 
         const store = createStore(rootReducer)
         console.log(store.getState())
-        store.dispatch({type : 'increase'})
+        store.dispatch({ type: 'increase' })
         console.log(store.getState())
-         store.dispatch({type : 'decrement'})
-          console.log(store.getState())
-          store.dispatch({type : 'add',payload : 100})
-          console.log(store.getState())
+        store.dispatch({ type: 'decrement' })
+        console.log(store.getState())
+        store.dispatch({ type: 'add', payload: 100 })
+        console.log(store.getState())
     </script>
 </body>
 
