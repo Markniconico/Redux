@@ -1,62 +1,59 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>redux</title>
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>redux</title>
-</head>
+    <body>
+        <script type="module">
+            import { createStore, combineReducers } from './redux/index.js';
 
-<body>
-    <script type="module">
-        import { createStore } from './redux/index.js'
-        import { combineReducers } from './redux/index.js'
+            const initState1 = { count: 0 };
+            function reducer1(state = initState1, action) {
+                switch (action.type) {
+                    case 'increase':
+                        return { ...state, count: state.count + 1 };
+                        break;
 
-        const initState1 = { count: 0 }
-        function reducer1(state = initState1, action) {
-            switch (action.type) {
-                case "increase":
-                    return { ...state, count: state.count + 1 }
-                    break;
+                    case 'add':
+                        return { ...state, count: state.count + action.payload };
+                        break;
 
-                case "add":
-                    return { ...state, count: state.count + action.payload }
-                    break;
-
-                default:
-                    return state
-                    break;
+                    default:
+                        return state;
+                        break;
+                }
             }
-        }
-        const initState2 = { count: 0 }
-        function reducer2(state = initState1, action) {
-            switch (action.type) {
-                case "increase":
-                    return { ...state, count: state.count + 1 }
-                    break;
+            const initState2 = { count: 0 };
+            function reducer2(state = initState1, action) {
+                switch (action.type) {
+                    case 'increase':
+                        return { ...state, count: state.count + 1 };
+                        break;
 
-                case "add":
-                    return { ...state, count: state.count + action.payload }
-                    break;
+                    case 'add':
+                        return { ...state, count: state.count + action.payload };
+                        break;
 
-                default:
-                    return state
-                    break;
+                    default:
+                        return state;
+                        break;
+                }
             }
-        }
 
-        const rootReducer = combineReducers({
-            a: reducer1,
-            b: reducer2
-        })
+            const rootReducer = combineReducers({
+                a: reducer1,
+                b: reducer2,
+            });
 
-        const store = createStore(rootReducer)
-        console.log(store.getState())
-        
-        store.dispatch({type : 'increase'})
-        console.log(store.getState())
-    </script>
-</body>
+            const store = createStore(rootReducer);
+            console.log(store.getState());
 
+            store.dispatch({ type: 'increase' });
+            console.log(store.getState());
+        </script>
+    </body>
 </html>
