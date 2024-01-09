@@ -15,6 +15,7 @@
 
         const initState1 = { count: 0 }
         function reducer1(state = initState1, action) {
+            console.log(action)
             switch (action.type) {
                 case "increase":
                     return { ...state, count: state.count + 1 }
@@ -29,11 +30,11 @@
                     break;
             }
         }
-        const initState2 = { count: 0 }
-        function reducer2(state = initState1, action) {
+        const initState2 = { count: 99 }
+        function reducer2(state = initState2, action) {
             switch (action.type) {
-                case "increase":
-                    return { ...state, count: state.count + 1 }
+                case "decrement":
+                    return { ...state, count: state.count - 1 }
                     break;
 
                 case "add":
@@ -53,9 +54,12 @@
 
         const store = createStore(rootReducer)
         console.log(store.getState())
-        
         store.dispatch({type : 'increase'})
         console.log(store.getState())
+         store.dispatch({type : 'decrement'})
+          console.log(store.getState())
+          store.dispatch({type : 'add',payload : 100})
+          console.log(store.getState())
     </script>
 </body>
 
